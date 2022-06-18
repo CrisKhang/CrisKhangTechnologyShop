@@ -24,9 +24,9 @@
                         <div class="drop__down-menu">
                             <li class="nav__item"><a class="nav__link">Menu</a></li>
                             <ul class="menu">
-                                <li><i class='bx bx-desktop'></i>&nbsp;<a href="/home/index?category=PC">PC</a></li>
+                                <li><i class='bx bx-desktop'></i>&nbsp;<a href="/home/index?category=PC#featured">PC</a></li>
                                 <li>
-                                    <label for="btn" class="first"><i class='bx bx-laptop' ></i>&nbsp;<a href="/home/index?category=LAP">Laptop</a>
+                                    <label for="btn" class="first"><i class='bx bx-laptop' ></i>&nbsp;<a href="/home/index?category=LAP#featured">Laptop</a>
                                         <span><i class='bx bxs-down-arrow'></i></span>
                                     </label>
                                     <input type="checkbox" name="" id="btn">
@@ -37,7 +37,7 @@
                                 </li>
 
                                 <li>
-                                    <label for="btn-2" class="second"><i class='bx bxs-devices'></i>&nbsp;<a href="/home/index?category=PHONE">Smartphone</a>
+                                    <label for="btn-2" class="second"><i class='bx bxs-devices'></i>&nbsp;<a href="/home/index?category=PHONE#featured">Smartphone</a>
                                         <span><i class='bx bxs-down-arrow'></i></span>
                                     </label>
                                     <input type="checkbox" name="" id="btn-2">
@@ -47,12 +47,12 @@
                                     </ul>
                                 </li>
 
-                                <li><a href="/home/index?category=GEAR"><i class='bx bxs-chip' ></i>&nbsp;Linh kiện máy tính</a></li>
-                                <li><a href="/home/index?category=MOUSE"><i class='bx bxs-mouse-alt' ></i>&nbsp;Chuột + lót chuột</a></li>
-                                <li><a href="/home/index?category=KEYB"><i class='bx bxs-keyboard' ></i>&nbsp;Bàn phím</a></li>
-                                <li><a href="/home/index?category=HP"><i class='bx bx-headphone' ></i>&nbsp;Tai nghe</a></li>
-                                <li><a href="/home/index?category=SPKER"><i class='bx bx-volume-full'></i></i>&nbsp;Loa</a></li>
-                                <li><a href="/home/index?category=CHGER"><i class='bx bxs-battery-charging'></i>&nbsp;Bộ sạc</a></li>
+                                <li><a href="/home/index?category=GEAR#featured"><i class='bx bxs-chip' ></i>&nbsp;Linh kiện máy tính</a></li>
+                                <li><a href="/home/index?category=MOUSE#featured"><i class='bx bxs-mouse-alt' ></i>&nbsp;Chuột + lót chuột</a></li>
+                                <li><a href="/home/index?category=KEYB#featured"><i class='bx bxs-keyboard' ></i>&nbsp;Bàn phím</a></li>
+                                <li><a href="/home/index?category=HP#featured"><i class='bx bx-headphone' ></i>&nbsp;Tai nghe</a></li>
+                                <li><a href="/home/index?category=SPKER#featured"><i class='bx bx-volume-full'></i></i>&nbsp;Loa</a></li>
+                                <li><a href="/home/index?category=CHGER#featured"><i class='bx bxs-battery-charging'></i>&nbsp;Bộ sạc</a></li>
                             </ul>
                         </div>
                         <li class="nav__item"><a href="/home/index#suscribe" class="nav__link">Suscribe</a></li>
@@ -73,7 +73,7 @@
                                 <!-- Cart item -->
                                 <c:forEach var="product" items="${shoppingCart.products}">
                                 	<li class="header__cart-item">
-                                		<img src="../images/product/${product.image1}"/>
+                                		<img class="header__cart-img" src="../images/product/${product.image1}"/>
                                 		<div class="header__cart-item-info">
                                 			<div class="header__cart-item-head">
                                 				<h5 class="header__cart-item-name">${product.name}</h5>
@@ -148,15 +148,37 @@
                                 </li>
                                 -->
                             </ul>
+                            <a href="/home/cart" class="header__cart-view-cart">
                             <div class="btn__view-cart">
-                                <a href="/home/cart" class="header__cart-view-cart">View cart</a>
+                                View cart
                             </div>
-                            
+                            </a>
                         </div>
                     </div>
-                    <a href="/account/login"><span><i class='bx bxs-user'></i></span></a>   
+                    <div class="drop__down-menu">
+                    <span><i class='bx bxs-user'></i></span>
+                    <ul class="user">
+                    	<c:if test="${user == null }">
+                        	<li><a href="/account/login">Đăng nhập</a></li>
+                        	<li><a href="/account/login">Đăng ký</a></li>
+                    	</c:if>
+  	                    <c:if test="${user != null }">
+                        	<li><a href="/account/profilecard">Tài khoản</a></li>
+                        	<li><a href="/account/changePassword">Đổi mật khẩu</a></li>
+                        	<li><a href="/account/logout">Đăng xuất</a></li>
+                        	<c:if test="${user.admin}">
+                        		<li><a href="/home/admin">Quản lý website</a></li>
+                        		<li><a href="/home/order">Lịch sử mua hàng</a></li>
+                        	</c:if>
+                        	<c:if test="${!user.admin}">
+                        		<li><a href="/home/order">Lịch sử mua hàng</a></li>
+                        	</c:if>
+                    	</c:if>
+                    </ul>
+                </div>   
                     
                 </div>
+                <h5>${user.fullname == null ? user.username : user.fullname}</h5>
                 <i class='bx bx-menu nav__toggle' id="nav-toggle" ></i>
                 
             </nav>

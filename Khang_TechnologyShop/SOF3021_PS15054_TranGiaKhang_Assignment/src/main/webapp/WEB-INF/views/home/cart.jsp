@@ -17,7 +17,7 @@
 }
 body {
 	background: #F0F1F3;
-	font-family: montserrat;
+	
 }
 .text3d{
 	font-size: 5em;
@@ -42,8 +42,13 @@ body {
 				-14px 14px 20px rgba(0, 0, 0, 0.6)
 	;
 }
+.address__input{
+	margin-bottom: 20px;
+	width: 50%;
+	height: 10%;
+}
 .wrapper {
-	max-width: 1000px;
+	max-width: 1200px;
 	margin: 0 auto;
 }
 .wrapper h1 {
@@ -119,6 +124,27 @@ body {
 	background: #fff;
 	box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }
+
+.btn-checkout{
+	background-color: #76bfb6;
+    color: #fff;
+    text-decoration: none;
+    display: block;
+    text-align: center;
+    height: 40px;
+    line-height: 40px;
+    font-weight: 900;
+    width: 10%;
+    margin-left: 2%;
+    border: none;
+    border-radius: 20px;
+}
+i{
+	margin-right: 15px;
+}
+.btn-checkout:hover{
+background-color: #3972a7;
+}
 .right-bar hr {
 	margin-bottom: 25px;
 }
@@ -126,24 +152,9 @@ body {
 	display: flex;
 	justify-content: space-between;
 	margin-bottom: 30px;
-	font-size: 20px;
+	font-size: 18px;
 }
-.right-bar a {
-	background-color: #76bfb6;
-	color: #fff;
-	text-decoration: none;
-	display: block;
-	text-align: center;
-	height: 40px;
-	line-height: 40px;
-	font-weight: 900;
-}
-.right-bar i {
-	margin-right: 15px;
-}
-.right-bar a:hover {
-	background-color: #3972a7;
-}
+
 @media screen and (max-width: 700px) {
 	.content h3 {
 		margin-bottom: 15px;
@@ -181,26 +192,33 @@ body {
 <body>
 	<div class="wrapper">
 		<h1 class="text3d">Shopping Cart</h1>
+		<h3>${buyMessage}</h3>
 		<div class="project">
 			<div class="shop">
 				<c:forEach var="product" items="${shoppingCart.products}">
-					<div class="box">
-						<img src="../images/product/${product.image1}"/>
-						<div class="content">
-							<h3>${product.name}</h3>
-							<h4>
-								<fmt:formatNumber value="${newPrice}" type="currency" currencySymbol="VND"></fmt:formatNumber>/1
-							</h4>
-							<p class="unit">Quantity: <input name="" value="${product.quantity}"/></p>
-							<p class="btn-area"><i aria-hidden="true" class="fa fa-trash"></i> <span class="btn2">
-								<a href="/home/cart/remove/${product.id}">Remove</a>
-							</span></p>
+					<form action="/home/cart/update/${product.id}" method="post">
+						<div class="box">
+							<img src="../images/product/${product.image1}"/>
+							<div class="content">
+								<h3>${product.name}</h3>
+								<h4>
+									<fmt:formatNumber value="${newPrice}" type="currency" currencySymbol="VND"></fmt:formatNumber> * 1 
+									= <fmt:formatNumber value="${newPrice * product.quantity}" type="currency" currencySymbol="VND"></fmt:formatNumber>
+								</h4>
+								<p class="unit">Quantity: <input name="quantity" type="number" min="1" onchange="this.form.submit()" value="${product.quantity}"/>
+									<span>${errorQuantityMessage}</span>
+								</p>
+								
+								<p class="btn-area"><i aria-hidden="true" class="fa fa-trash"></i> <span class="btn2">
+									<a href="/home/cart/remove/${product.id}">Remove</a>
+								</span></p>
+							</div>
 						</div>
-					</div>
+					</form>
 				</c:forEach>
 			</div>
 			<div class="right-bar">
-				<p><span>Subtotal   </span> <span>
+				<p><span>Subtotal</span> <span>
 					<fmt:formatNumber value="${shoppingCart.amount}" type="currency" currencySymbol="VND"></fmt:formatNumber>
 				</span></p>
 				<hr>
@@ -214,9 +232,22 @@ body {
 				<hr>
 				<p><span>Total    </span> <span>
 					<fmt:formatNumber value="${shoppingCart.amount + shoppingCart.tax + shoppingCart.shipping}" type="currency" currencySymbol="VND"></fmt:formatNumber>
-				</span></p><a href="#"><i class="fa fa-shopping-cart"></i>Checkout</a>
+				</span></p>
 			</div>
 		</div>
+		<form action="/home/cart/checkout" method="post">
+			<div class="right-bar" style="margin-bottom: 20px; margin-top: 20px; padding-bottom: 60px">
+				<p><span>Delivery address</span></p>
+				<input type="text" name="address" id="" class="address__input">
+				<hr>
+				<p><span>Pick-up phone number</span></p>
+				<input type="text" name="phonenumber" id="" class="address__input">
+				<hr>
+				<p><span>replacement recipient's name (if any)</span></p>
+				<input type="text" name="orderNote" id="" class="address__input">
+			</div>
+			<button type="submit" class="btn-checkout"><i class="fa fa-shopping-cart"></i>Checkout</button>
+		</form>
 	</div>
 </body>
 </html>

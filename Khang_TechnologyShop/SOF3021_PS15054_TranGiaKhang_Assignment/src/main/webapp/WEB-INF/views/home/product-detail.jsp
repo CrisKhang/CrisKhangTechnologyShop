@@ -199,6 +199,7 @@ img{
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         grid-gap: 1.5rem;
+        margin-top: 66px
     }
     .card-wrapper{
         height: 100vh;
@@ -296,10 +297,17 @@ img{
 
                 <div class="purchase-info">
                 	<form action="/home/cart/add/${product.id}" method="post">
-                		<input type="number" min="1" name="quantity" value="1">
-                		<button class="btn">
-                        	Add to Cart <i class="fas fa-shopping-cart"></i>
-                    	</button>
+                		<input type="number" min="1" max="${product.quantity}" name="quantity" value="1">
+                		<c:if test="${product.quantity > 0}">
+                			<button class="btn">
+                        		Add to Cart <i class="fas fa-shopping-cart"></i>
+                    		</button>
+                		</c:if>
+                		<c:if test="${product.quantity <= 0}">
+                			<button class="btn" disabled="disabled">
+                        		Add to Cart <i class="fas fa-shopping-cart"></i>
+                    		</button>
+                		</c:if>
                     	<button type="button" class="btn">Compare</button>
                 	</form>                                                          
                 </div>
@@ -328,4 +336,24 @@ img{
 
 
 </body>
+<script type="text/javascript">/*===== next image silde product =====*/
+const imgs = document.querySelectorAll('.img-select a');
+const imgBtns = [...imgs];
+let imgId = 1;
+
+imgBtns.forEach((imgItem) => {
+    imgItem.addEventListener('click', (event) => {
+        event.preventDefault();
+        imgId = imgItem.dataset.id;
+        slideImage();
+    });
+});
+
+function slideImage(){
+    const displayWidth = document.querySelector('.img-showcase img:first-child').clientWidth;
+
+    document.querySelector('.img-showcase').style.transform = `translateX(${- (imgId - 1) * displayWidth}px)`;
+}
+
+window.addEventListener('resize', slideImage);</script>
 </html>
